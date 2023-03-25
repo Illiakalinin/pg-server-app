@@ -1,11 +1,12 @@
 const { Router } = require('express');
+const { usersController } = require('../controllers');
 
 // /api/users
 const usersRouter = Router();
 
 usersRouter
   .route('/')
-  .post(() => {})
+  .post(usersController.createUser)
   .get((req, res) => {
     res.send('OK');
   });
