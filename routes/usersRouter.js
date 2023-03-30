@@ -1,22 +1,22 @@
 const { Router } = require('express');
+
 const { usersController } = require('../controllers');
+const { paginate, validate } = require('../middleware');
 
 // /api/users
 const usersRouter = Router();
 
 usersRouter
   .route('/')
-  .post(usersController.createUser)
-  .get((req, res) => {
-    res.send('OK');
-  });
+  .post(validate.validateUsersOnCreate, usersController.createUser)
+  .get(paginate.paginateUser, usersController.getUsers);
 
 usersRouter
-  .route('/:id')
-  .post(() => {})
+  .route('/:userId')
+  .patch(validate.validateUsersOnUpdate, usersController.updateUser)
   .get((req, res) => {
     res.send('ok2');
   })
-  .delete(() => {});
+  .delete(usersController.deleteUser);
 
 module.exports = usersRouter;
