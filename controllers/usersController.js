@@ -6,9 +6,49 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const createdUser = await User.create(body);
     res.status(201).send(createdUser);
-  } catch (error) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 };
 
-module.exports.deleteUser = async () => {};
+module.exports.getUsers = async (req, res, next) => {
+  const { pagination } = req;
+
+  try {
+    const foundUsers = await User.getAll(pagination);
+    res.status(200).send(foundUsers);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.updateUser = async (req, res, next) => {
+  console.log('req.params.userId :>> ', req.params.userId);
+
+  const { body } = req;
+  const { userId } = req.params;
+  try {
+    const updatedUser = await User.updateById(userId, body);
+    if (updatedUser) {
+      return res.status(204).send();
+    }
+    res.status(404).send('User Not Found');
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  // console.log('req.params.userId :>> ', req.params.userId);
+
+  const { userId } = req.params;
+  try {
+    const deletedUser = await User.deleteById(userId);
+    if (deletedUser) {
+      res.status(204).send();
+    }
+    res.status(404).send('User Not Found');
+  } catch (err) {
+    next(err);
+  }
+};
