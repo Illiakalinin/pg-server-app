@@ -10,13 +10,13 @@ const connectionConfig = {
 
 const pool = new Pool(connectionConfig);
 
-// pool.connect(err => {
-//   if (!err) {
-//     console.log('DB connection success')
-//   }
-// })
+pool.connect(err => {
+  if (!err) {
+    console.log('DB connection success');
+  }
+});
 
-// process.on('beforeExit', () => pool.end())
+process.on('beforeExit', () => pool.end());
 
 // pool.query('SELECT CURRENT_DATE;', (err, data) => {
 //   if (!err) {
